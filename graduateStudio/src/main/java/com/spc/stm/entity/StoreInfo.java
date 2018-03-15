@@ -4,6 +4,7 @@ import java.util.Date;
 
 
 public class StoreInfo {
+
     private Long sid;
 
     private Long bossId;
