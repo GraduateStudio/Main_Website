@@ -1,0 +1,30 @@
+#端口号配置
+server:
+  port: 22001
+  servlet-path: /stm
+
+# 数据库
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    #数据库地址,例：jdbc:mysql://127.0.0.1:3306/datastore?useUnicode=true&characterEncoding=utf-8 //root //123456
+    url: ***
+    username: ***
+    password: ***
+
+#Mapping位置配置
+mybatis:
+ mapperLocations: mapper/*.xml
+
+#eureka:
+#  instance:
+#    hostname: localhost
+#  client:
+#    registerWithEureka: false
+#    fetchRegistry: false
+#    serviceUrl:
+#      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
+
+
