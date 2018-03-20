@@ -1,0 +1,18 @@
+<head>
+    <script src="/stm/js/jquery-3.3.1.min.js"></script>
+    <script>
+        var request = function () {
+            $.ajax({
+                type: "get",
+                url: "/stm/storemanagerment/store/get?storeId=1",
+                success: function (data, obj, config) {
+                    $("#wjj")[0].value = data.sid;
+                }
+            });
+        }
+</script>
+</head>
+<body>
+<input type="text" id="wjj"/>
+    <button onclick="request()">ajax request</button>
+</body>
