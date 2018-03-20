@@ -8,17 +8,12 @@ security:
     password: 8256260  # 直接登录时的密码
   ignored: /
   sessions: never   # session策略
-  oauth2:
-    sso:
-      loginPath: /login   # 登录路径
-    client: #以下配置为github认证登陆
-      clientId: bf3e48f0346936f07c6f
-      clientSecret: 856f052a35c97b3572c5611a0b34816332268a88
-      accessTokenUri: https://github.com/login/oauth/access_token
-      userAuthorizationUri: https://github.com/login/oauth/authorize
-    resource:
-      userInfoUri: https://api.github.com/user
-      preferTokenInfo: false
+  sso:
+    loginPath: /login   # 登录路径
+  client: #以下配置为本地认证登陆
+    accessTokenUri: http://localhost:${server.port}}/login
+    userAuthorizationUri: http://localhost:${server.port}}/login
+
 # 数据库
 spring:
   application:

@@ -1,12 +1,12 @@
-#server:
-#  port: 7071
-#
-#spring:
-#  application:
-#   name: EurekaServer
-#
-#eureka:
-#  client:
-#    register-with-eureka: false
-#    fetch-registry: false
-#    defaultZone: http://localhost:${server.port}/eureka/
+server:
+  port: 7071
+
+spring:
+  application:
+   name: EurekaServer
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    defaultZone: http://localhost:${server.port}/eureka/
