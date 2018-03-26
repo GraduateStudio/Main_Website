@@ -4,12 +4,13 @@ import java.util.Date;
 
 
 public class StoreInfo {
-
     private Long sid;
 
     private Long bossId;
 
     private String bossName;
+
+    private String bossContact;
 
     private String storeName;
 
@@ -49,6 +50,14 @@ public class StoreInfo {
 
     public void setBossName(String bossName) {
         this.bossName = bossName == null ? null : bossName.trim();
+    }
+
+    public String getBossContact() {
+        return bossContact;
+    }
+
+    public void setBossContact(String bossContact) {
+        this.bossContact = bossContact == null ? null : bossContact.trim();
     }
 
     public String getStoreName() {

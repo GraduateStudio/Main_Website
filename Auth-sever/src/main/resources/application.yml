@@ -1,0 +1,17 @@
+server:
+  port: 8081
+  context-path: /auth
+security:
+  basic:
+   enabled: false
+#logging.level.org.springframework=DEBUG
+
+# Eureka
+spring:
+  application:
+    name: auth-server
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:7071/eureka/
+

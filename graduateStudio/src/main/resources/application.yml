@@ -3,25 +3,24 @@ server:
   port: 10086
   servlet-path: /stm
 security:
-  user:
-    name: wjj
-    password: 8256260  # 直接登录时的密码
-  ignored: /
-  sessions: never   # session策略
-  sso:
-    loginPath: /login   # 登录路径
-  client: #以下配置为本地认证登陆
-    accessTokenUri: http://localhost:${server.port}}/login
-    userAuthorizationUri: http://localhost:${server.port}}/login
+  basic:
+    enabled: false
+  oauth2:
+    client:
+      clientId: SampleClientId
+      clientSecret: secret
+      accessTokenUri: http://192.168.0.100:8081/auth/oauth/token
+      userAuthorizationUri: http://192.168.0.100:8081/auth/oauth/authorize
+    resource:
+      userInfoUri: http://192.168.0.100:8081/auth/user/me
 
 # 数据库
 spring:
   application:
-    name: zuul
+    name: stm-server
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    #数据库地址,例：jdbc:mysql://127.0.0.1:3306/datastore?useUnicode=true&characterEncoding=utf-8 //root //123456
     url: jdbc:mysql://120.77.218.225:3306/wangjunjie?useUnicode=true&characterEncoding=utf-8
     username: root
     password: weiwei18

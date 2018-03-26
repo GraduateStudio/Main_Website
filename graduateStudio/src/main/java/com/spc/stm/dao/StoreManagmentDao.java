@@ -3,6 +3,8 @@ package com.spc.stm.dao;
 import com.spc.stm.entity.StoreInfo;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface StoreManagmentDao {
 
@@ -17,4 +19,6 @@ public interface StoreManagmentDao {
     int updateByPrimaryKeySelective(StoreInfo record);
 
     int updateByPrimaryKey(StoreInfo record);
+
+    List<StoreInfo> listStoreAll();
 }

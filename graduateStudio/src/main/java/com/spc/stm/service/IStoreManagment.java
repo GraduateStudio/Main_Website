@@ -12,4 +12,5 @@ public interface IStoreManagment {
     void removeStoreInfo(StoreInfo sto);
     StoreInfo getStoreInfoById(String id);
     List<StoreInfo> listStoreInfoByIds(List<String> ids);
+    List<StoreInfo> listAll();
 }

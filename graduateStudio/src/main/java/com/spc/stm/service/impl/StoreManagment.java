@@ -46,4 +46,10 @@ public class StoreManagment implements IStoreManagment {
         }
         return result;
     }
+
+    @Override
+    public List<StoreInfo> listAll() {
+        List<StoreInfo> result =  storeManagmentDao.listStoreAll();
+        return result;
+    }
 }

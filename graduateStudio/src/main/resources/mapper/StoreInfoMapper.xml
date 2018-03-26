@@ -1,156 +1,174 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.spc.stm.dao.StoreManagmentDao" >
-  <resultMap id="BaseResultMap" type="com.spc.stm.entity.StoreInfo" >
-    <id column="sid" property="sid" jdbcType="BIGINT" />
-    <result column="boss_id" property="bossId" jdbcType="BIGINT" />
-    <result column="boss_name" property="bossName" jdbcType="VARCHAR" />
-    <result column="store_name" property="storeName" jdbcType="VARCHAR" />
-    <result column="store_description" property="storeDescription" jdbcType="VARCHAR" />
-    <result column="store_address" property="storeAddress" jdbcType="VARCHAR" />
-    <result column="store_img" property="storeImg" jdbcType="VARCHAR" />
-    <result column="store_phone" property="storePhone" jdbcType="VARCHAR" />
-    <result column="regist_time" property="registTime" jdbcType="TIMESTAMP" />
-    <result column="effecti_time" property="effectiTime" jdbcType="TIMESTAMP" />
-    <result column="status" property="status" jdbcType="INTEGER" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    sid, boss_id, boss_name, store_name, store_description, store_address, store_img, 
-    store_phone, regist_time, effecti_time, status
+<mapper namespace="com.spc.stm.dao.StoreManagmentDao">
+    <resultMap id="BaseResultMap" type="com.spc.stm.entity.StoreInfo">
+        <id column="sid" property="sid" jdbcType="BIGINT"/>
+        <result column="boss_id" property="bossId" jdbcType="BIGINT"/>
+        <result column="boss_name" property="bossName" jdbcType="VARCHAR"/>
+        <result column="boss_contact" property="bossContact" jdbcType="VARCHAR"/>
+        <result column="store_name" property="storeName" jdbcType="VARCHAR"/>
+        <result column="store_description" property="storeDescription" jdbcType="VARCHAR"/>
+        <result column="store_address" property="storeAddress" jdbcType="VARCHAR"/>
+        <result column="store_img" property="storeImg" jdbcType="VARCHAR"/>
+        <result column="store_phone" property="storePhone" jdbcType="VARCHAR"/>
+        <result column="regist_time" property="registTime" jdbcType="TIMESTAMP"/>
+        <result column="effecti_time" property="effectiTime" jdbcType="TIMESTAMP"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    sid, boss_id, boss_name, boss_contact, store_name, store_description, store_address, 
+    store_img, store_phone, regist_time, effecti_time, status
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
-    <include refid="Base_Column_List" />
-    from stm_info_t
-    where sid = #{sid,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    <select id="listStoreAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from stm_info_t
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from stm_info_t
+        where sid = #{sid,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from stm_info_t
     where sid = #{sid,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.spc.stm.entity.StoreInfo" >
+    <insert id="insert" parameterType="com.spc.stm.entity.StoreInfo">
     insert into stm_info_t (sid, boss_id, boss_name, 
-      store_name, store_description, store_address, 
-      store_img, store_phone, regist_time, 
-      effecti_time, status)
+      boss_contact, store_name, store_description, 
+      store_address, store_img, store_phone, 
+      regist_time, effecti_time, status
+      )
     values (#{sid,jdbcType=BIGINT}, #{bossId,jdbcType=BIGINT}, #{bossName,jdbcType=VARCHAR}, 
-      #{storeName,jdbcType=VARCHAR}, #{storeDescription,jdbcType=VARCHAR}, #{storeAddress,jdbcType=VARCHAR}, 
-      #{storeImg,jdbcType=VARCHAR}, #{storePhone,jdbcType=VARCHAR}, #{registTime,jdbcType=TIMESTAMP}, 
-      #{effectiTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER})
+      #{bossContact,jdbcType=VARCHAR}, #{storeName,jdbcType=VARCHAR}, #{storeDescription,jdbcType=VARCHAR}, 
+      #{storeAddress,jdbcType=VARCHAR}, #{storeImg,jdbcType=VARCHAR}, #{storePhone,jdbcType=VARCHAR}, 
+      #{registTime,jdbcType=TIMESTAMP}, #{effectiTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.spc.stm.entity.StoreInfo" >
-    insert into stm_info_t
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="sid != null" >
-        sid,
-      </if>
-      <if test="bossId != null" >
-        boss_id,
-      </if>
-      <if test="bossName != null" >
-        boss_name,
-      </if>
-      <if test="storeName != null" >
-        store_name,
-      </if>
-      <if test="storeDescription != null" >
-        store_description,
-      </if>
-      <if test="storeAddress != null" >
-        store_address,
-      </if>
-      <if test="storeImg != null" >
-        store_img,
-      </if>
-      <if test="storePhone != null" >
-        store_phone,
-      </if>
-      <if test="registTime != null" >
-        regist_time,
-      </if>
-      <if test="effectiTime != null" >
-        effecti_time,
-      </if>
-      <if test="status != null" >
-        status,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="sid != null" >
-        #{sid,jdbcType=BIGINT},
-      </if>
-      <if test="bossId != null" >
-        #{bossId,jdbcType=BIGINT},
-      </if>
-      <if test="bossName != null" >
-        #{bossName,jdbcType=VARCHAR},
-      </if>
-      <if test="storeName != null" >
-        #{storeName,jdbcType=VARCHAR},
-      </if>
-      <if test="storeDescription != null" >
-        #{storeDescription,jdbcType=VARCHAR},
-      </if>
-      <if test="storeAddress != null" >
-        #{storeAddress,jdbcType=VARCHAR},
-      </if>
-      <if test="storeImg != null" >
-        #{storeImg,jdbcType=VARCHAR},
-      </if>
-      <if test="storePhone != null" >
-        #{storePhone,jdbcType=VARCHAR},
-      </if>
-      <if test="registTime != null" >
-        #{registTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="effectiTime != null" >
-        #{effectiTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.spc.stm.entity.StoreInfo" >
-    update stm_info_t
-    <set >
-      <if test="bossId != null" >
-        boss_id = #{bossId,jdbcType=BIGINT},
-      </if>
-      <if test="bossName != null" >
-        boss_name = #{bossName,jdbcType=VARCHAR},
-      </if>
-      <if test="storeName != null" >
-        store_name = #{storeName,jdbcType=VARCHAR},
-      </if>
-      <if test="storeDescription != null" >
-        store_description = #{storeDescription,jdbcType=VARCHAR},
-      </if>
-      <if test="storeAddress != null" >
-        store_address = #{storeAddress,jdbcType=VARCHAR},
-      </if>
-      <if test="storeImg != null" >
-        store_img = #{storeImg,jdbcType=VARCHAR},
-      </if>
-      <if test="storePhone != null" >
-        store_phone = #{storePhone,jdbcType=VARCHAR},
-      </if>
-      <if test="registTime != null" >
-        regist_time = #{registTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="effectiTime != null" >
-        effecti_time = #{effectiTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=INTEGER},
-      </if>
-    </set>
-    where sid = #{sid,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.spc.stm.entity.StoreInfo" >
+    <insert id="insertSelective" parameterType="com.spc.stm.entity.StoreInfo">
+        insert into stm_info_t
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sid != null">
+                sid,
+            </if>
+            <if test="bossId != null">
+                boss_id,
+            </if>
+            <if test="bossName != null">
+                boss_name,
+            </if>
+            <if test="bossContact != null">
+                boss_contact,
+            </if>
+            <if test="storeName != null">
+                store_name,
+            </if>
+            <if test="storeDescription != null">
+                store_description,
+            </if>
+            <if test="storeAddress != null">
+                store_address,
+            </if>
+            <if test="storeImg != null">
+                store_img,
+            </if>
+            <if test="storePhone != null">
+                store_phone,
+            </if>
+            <if test="registTime != null">
+                regist_time,
+            </if>
+            <if test="effectiTime != null">
+                effecti_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sid != null">
+                #{sid,jdbcType=BIGINT},
+            </if>
+            <if test="bossId != null">
+                #{bossId,jdbcType=BIGINT},
+            </if>
+            <if test="bossName != null">
+                #{bossName,jdbcType=VARCHAR},
+            </if>
+            <if test="bossContact != null">
+                #{bossContact,jdbcType=VARCHAR},
+            </if>
+            <if test="storeName != null">
+                #{storeName,jdbcType=VARCHAR},
+            </if>
+            <if test="storeDescription != null">
+                #{storeDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="storeAddress != null">
+                #{storeAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="storeImg != null">
+                #{storeImg,jdbcType=VARCHAR},
+            </if>
+            <if test="storePhone != null">
+                #{storePhone,jdbcType=VARCHAR},
+            </if>
+            <if test="registTime != null">
+                #{registTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="effectiTime != null">
+                #{effectiTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.spc.stm.entity.StoreInfo">
+        update stm_info_t
+        <set>
+            <if test="bossId != null">
+                boss_id = #{bossId,jdbcType=BIGINT},
+            </if>
+            <if test="bossName != null">
+                boss_name = #{bossName,jdbcType=VARCHAR},
+            </if>
+            <if test="bossContact != null">
+                boss_contact = #{bossContact,jdbcType=VARCHAR},
+            </if>
+            <if test="storeName != null">
+                store_name = #{storeName,jdbcType=VARCHAR},
+            </if>
+            <if test="storeDescription != null">
+                store_description = #{storeDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="storeAddress != null">
+                store_address = #{storeAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="storeImg != null">
+                store_img = #{storeImg,jdbcType=VARCHAR},
+            </if>
+            <if test="storePhone != null">
+                store_phone = #{storePhone,jdbcType=VARCHAR},
+            </if>
+            <if test="registTime != null">
+                regist_time = #{registTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="effectiTime != null">
+                effecti_time = #{effectiTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+        </set>
+        where sid = #{sid,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.spc.stm.entity.StoreInfo">
     update stm_info_t
     set boss_id = #{bossId,jdbcType=BIGINT},
       boss_name = #{bossName,jdbcType=VARCHAR},
+      boss_contact = #{bossContact,jdbcType=VARCHAR},
       store_name = #{storeName,jdbcType=VARCHAR},
       store_description = #{storeDescription,jdbcType=VARCHAR},
       store_address = #{storeAddress,jdbcType=VARCHAR},

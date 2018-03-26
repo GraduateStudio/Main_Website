@@ -13,6 +13,7 @@ import java.util.List;
 
 
 @RestController
+@CrossOrigin(allowCredentials="true", allowedHeaders="*", methods={RequestMethod.GET,RequestMethod.POST,RequestMethod.PUT,RequestMethod.DELETE}, origins="*")
 @RequestMapping(value="/storemanagerment")
 public class StoreManagmentController {
 
@@ -30,6 +31,12 @@ public class StoreManagmentController {
     @RequestMapping(value = "/store/list", method = RequestMethod.POST)
     public List<StoreInfo> listStoreById(@RequestBody List<String> storeIds) {
         List<StoreInfo> result = storeManagment.listStoreInfoByIds(storeIds);
+        return result;
+    }
+    @ApiOperation(value = "根据ID列表获取全部店铺信息")
+    @RequestMapping(value = "/store/listAll", method = RequestMethod.GET)
+    public List<StoreInfo> listStoreById() {
+        List<StoreInfo> result = storeManagment.listAll();
         return result;
     }
 
