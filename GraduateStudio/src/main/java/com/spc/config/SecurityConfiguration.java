@@ -14,7 +14,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     /**
      * 设定用户访问权限
      * 用户身份可以访问 订单相关API
-     * */
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 //        http.authorizeRequests()
@@ -33,16 +33,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .loginPage("/stm/login").permitAll()
                 .and()
                 .logout()
-                .permitAll().and().addFilterAfter(new FilterTest(),AnonymousAuthenticationFilter.class)
+                .permitAll()
+                .and().headers().frameOptions().sameOrigin()
+                .and().addFilterAfter(new FilterTest(), AnonymousAuthenticationFilter.class)
                 .csrf().disable();        //暂时禁用CSRF，否则无法提交表单
     }
+
     /**
      * 添加自定义用户
-     * */
+     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("admin").password("admin").roles("ADMIN","USER")
+                .withUser("admin").password("admin").roles("ADMIN", "USER")
                 .and()
                 .withUser("terry").password("terry").roles("USER")
                 .and()
