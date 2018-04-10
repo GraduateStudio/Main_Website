@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 
 
 @Configuration
@@ -35,8 +34,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logout()
                 .permitAll()
                 .and().headers().frameOptions().sameOrigin()
-                .and().addFilterAfter(new FilterTest(), AnonymousAuthenticationFilter.class)
-                .csrf().disable();        //暂时禁用CSRF，否则无法提交表单
+                //.and().addFilterAfter(new FilterTest(), AnonymousAuthenticationFilter.class)
+                .and().csrf().disable();        //暂时禁用CSRF，否则无法提交表单
     }
 
     /**
