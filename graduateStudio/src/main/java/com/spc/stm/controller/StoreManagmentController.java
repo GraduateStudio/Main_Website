@@ -8,6 +8,7 @@ import com.spc.stm.service.IStoreManagment;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import redis.clients.jedis.Jedis;
 
 import java.util.List;
 
@@ -57,6 +58,18 @@ public class StoreManagmentController {
     @RequestMapping(value = "/store/update", method = RequestMethod.PUT)
     public void updateStoreById(@RequestBody StoreInfo storeInfo) {
         storeManagment.updateStoreInfo(storeInfo);
+    }
+
+    @ApiOperation(value="redis")
+    @RequestMapping(value = "/redis/save",method=RequestMethod.POST)
+    String saveRedis(@RequestParam("id")String id){
+        Jedis jedis= new Jedis("47.106.107.117",6379);
+        jedis.auth("Admin@1234");
+        jedis.set(id,id);
+
+        System.out.println(jedis.get(id));
+        jedis.disconnect();
+        return id;
     }
 
 

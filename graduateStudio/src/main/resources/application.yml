@@ -31,8 +31,8 @@ eureka:
       defaultZone: http://localhost:7071/eureka/
 #Mapping位置配置
 mybatis:
- mapperLocations: mapper/*.xml
-
+ mapperLocations: mapper/*.xml 
+ 
 
 
 
