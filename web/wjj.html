@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="lib/jquery-3.3.1.min.js"></script>
+    <script src="wjj.js"></script>
+    <link rel="stylesheet" href="css/menu-button.css" type="text/css">
+    <link rel="stylesheet" href="css/base.css" type="text/css">
+    <link rel="stylesheet" href="css/wjj.css" type="text/css">
+    <title>关于王俊杰</title>
+    <base target="_blank" />
+</head>
+
+<body>
+<div id="allContent">
+    <div id="hide_menu" class="hide_left">
+        <ul>
+            <li onclick='scrollGoto("about")'>关于</li>
+            <li onclick='scrollGoto("description")'>描述</li>
+            <li onclick='scrollGoto("experience")'>经验</li>
+            <li><a href="https://github.com/w8251107">GitHub</a></li>
+        </ul>
+    </div>
+    <div id="main" class="main">
+        <div class="headmsg">
+            <p>Resume for WangJunJie</p>
+        </div>
+        <img src="img/p0.jpg">
+        <button type="button" class="hamburger is-closed" onclick="leftmove()">
+            <input type="checkbox" id="closeOrOpen" style="display:none"/>
+            <span class="hamb-top"></span>
+            <span class="hamb-middle"></span>
+            <span class="hamb-bottom"></span>
+        </button>
+        <h1 id="about">关于王俊杰</h1>
+        <h3 class="aboutTip">毕业于桂林电子科技大学信息科技学院(本科学士)</h3>
+        <div class="content_box">
+            <p>
+                <my>我</my>一个性格开朗，思维活跃，做事有责任心，抗压能力强心理素质极好的人。热爱编程，懂得吸取教训，举一反三，并能从实际出发全面考虑问题，在工作和生活中能够不断吸取新的知识充实自己，自学能力强，喜欢钻研新技术，敢于面对和克服困难，努力提升自己的工作能力，挑战自我，不断进步。</p>
+        </div>
+        <h1 id="description">工作描述</h1>
+        <div class="content_box">
+            <h2>软通动力信息技术（集团）有限公司 2016.2-至今 高级软件工程师</h2>
+            <p>工作描述：</p>
+            <p>1. 业务开发</p>
+            <p>按时完成开发任务，在职期间无拖延任务，多次提前完成开发任务</p>
+            <p>2. 代码维护</p>
+            <p>定期进行代码评审，维护代码框架，保证目录结构、代码架构规范</p>
+        </div>
+        <h1 id="experience">项目经验</h1>
+        <div class="content_box">
+            <p>●2018.03 至今 ISDP实施计划</p>
+            <p>项目描述：ISDP产品实施计划管理</p>
+            <p>主要职能：开发需求，维护模块代码，需求和代码评审</p>
+            <p>开发模块：实施计划列表扩展字段</p>
+            <p>地址：<a href="http://app.huawei.com/sdcp/portalNew">ISDP</a></p>
+        </div>
+        <div class="content_box">
+            <p>●2017.06-2018.03 EISDP服务交付好管家</p>
+            <p>项目描述：合同服务交付的ERP web开发</p>
+            <p>主要职能：开发需求，维护模块代码，需求和代码评审</p>
+            <p>开发模块：华为交付合同列表，培训交付合同列表，培训申请单，快捷申请单等</p>
+            <p>地址：<a href="http://app.huawei.com/sdcp/eisdp">EISDP服务交付好管家</a></p>
+        </div>
+        <div class="content_box">
+            <p> ●2017.03-2017.06 Agile Controller-Campus V3R2 云管理上车</p>
+            <p>项目描述：收编云管理功能，开发新功能</p>
+            <p>主要职能：承担PL工作，代码质量维护加固，结构整改，代码review，业务接口开发和重构，Unit Test代码编写，业务安全项排查，同事赋能等</p>
+            <p>开发模块：用户组管理，参数配置，服务器配置模板化，mac优先认证</p>
+            <p>地址：<a href="http://e.huawei.com/cn/products/enterprise-networking/sdn-controller/agile-controller/campus">Agile Controller-Campus</a></p>
+        </div>
+        <div class="content_box">
+            <p> ●2016.09-2017.02 Agile Controller-Campus V3R1 CloudVPN</p>
+            <p>项目描述：园区AP、CPE、VFW等设备管理</p>
+            <p>主要职能：承担PL工作，代码质量维护加固，结构整改，Yang模型维护，业务接口开发</p>
+            <p>开发模块：设备增删改查接口，设备上下线，日志上报等</p>
+            <p>地址：<a href="http://e.huawei.com/cn/products/enterprise-networking/sdn-controller/agile-controller/campus">Agile Controller-Campus</a></p>
+        </div>
+        <div class="content_box">
+            <p> ●2015.08-2015.12 基于SSH框架网站搭建</p>
+            <p>项目描述：一个基于微信和SSH框架的公众号网站</p>
+            <p>主要职能：前后台代码模块低耦合开发，负责一个功能从数据库表到页面</p>
+        </div>
+        <div class="onlyHeight"></div>
+    </div>
+
+    <div id="bottom_msg" class="bottom_msg">
+        <span> E-mail： wjj8251107@hotmail.com</span><br>
+        <span> Phone： 13544255392</span>
+    </div>
+
+</div>
+</body>
+</html>
