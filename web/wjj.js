@@ -1,10 +1,11 @@
 var i = 0;
 var moveTime = 500;
 $(document).ready(function(){
+    if(navigator.platform.toLowerCase().indexOf("win")>-1){
+        document.writeln("请用手机打开");
+        return
+    }
     closeOrOpen.value="off";
-    // if(navigator.platform.toLowerCase().indexOf("win")>-1){
-    //     document.writeln("请用手机打开");
-    // }
 })
 function leftmove() {
     if (i % 2 == 0) {

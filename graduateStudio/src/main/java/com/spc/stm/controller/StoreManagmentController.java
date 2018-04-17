@@ -66,7 +66,6 @@ public class StoreManagmentController {
         Jedis jedis= new Jedis("47.106.107.117",6379);
         jedis.auth("Admin@1234");
         jedis.set(id,id);
-
         System.out.println(jedis.get(id));
         jedis.disconnect();
         return id;
