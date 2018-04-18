@@ -19,7 +19,7 @@ public class WebServer {
                     .handler(new LoggingHandler(LogLevel.INFO))
                     .childHandler(new WebSocketChannelInitializer());
 
-            ChannelFuture channelFuture = serverBootstrap.bind(8989).sync();
+            ChannelFuture channelFuture = serverBootstrap.bind(11110).sync();
             channelFuture.channel().closeFuture().sync();
         }finally{
             bossGroup.shutdownGracefully();

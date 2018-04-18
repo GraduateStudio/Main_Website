@@ -2,106 +2,43 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Socket</title>
+    <title>留言板</title>
     <script src="lib/jquery-3.3.1.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            Date.prototype.format = function(format) {
-                var date = {
-                    "M+": this.getMonth() + 1,
-                    "d+": this.getDate(),
-                    "h+": this.getHours(),
-                    "m+": this.getMinutes()<10?"0"+this.getMinutes():this.getMinutes(),
-                    "s+": this.getSeconds()<10?"0"+this.getSeconds():this.getSeconds(),
-                    "q+": Math.floor((this.getMonth() + 3) / 3),
-                    "S+": this.getMilliseconds()
-                };
-                if (/(y+)/i.test(format)) {
-                    format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
-                }
-                for (var k in date) {
-                    if (new RegExp("(" + k + ")").test(format)) {
-                        format = format.replace(RegExp.$1, RegExp.$1.length == 1 ?
-                            date[k] : ("00" + date[k]).substr(("" + date[k]).length));
-                    }
-                }
-                return format;
-            }
-        });
+    <script src="lib/jquery.cookie.js"></script>
+    <script src="websocket.js"></script>
+    <style>
+        body{
 
-        var websocket;
-        var lastDate=new Date().getTime();
-        //如果浏览器支持WebSocket
-        if (window.WebSocket) {
-            websocket = new WebSocket("ws://192.168.0.100:8989/ws");  //获得WebSocket对象
-
-            //当有消息过来的时候触发
-            websocket.onmessage = function (event) {
-                var msg = event.data;
-                if (msg.indexOf("!!A!A!A!!nowConnectCount:") > -1) {
-                    $("#count").html(msg.substr(25));
-                    return;
-                }
-                if (msg.indexOf("!!A!A!A!!initHistOryMessage:") > -1) {
-                    var resBox = $("#respMessage");
-                    msg = msg.substring(28);
-                    var msgarr = msg.split("!!A!A!A!!sOmeBodySay:");
-                    for (var i = 0; i < msgarr.length-1; i++) {
-                        if (i % 2 == 0) {
-                            resBox.val(resBox.val() + new Date(parseInt(msgarr[i])).format('yyyy-MM-dd h:m:s') + " 某人：");
-                        } else {
-                            resBox.val(resBox.val() + msgarr[i] + "\n");
-                        }
-                    }
-                    return;
-                }
-                var respMessage = document.getElementById("respMessage");
-
-                respMessage.value = new Date(lastDate).format('yyyy-MM-dd h:m:s')+" " +event.data + "\n" + respMessage.value;
-            }
-
-            //连接关闭的时候触发
-            websocket.onclose = function (event) {
-                var respMessage = document.getElementById("respMessage");
-                respMessage.value = respMessage.value + "\n断开连接";
-            }
-
-            //连接打开的时候触发
-            websocket.onopen = function (event) {
-                websocket.send("!!A!A!A!!"); //send()发送消息
-                $("#respMessage").val("");
-            }
-        } else {
-            alert("浏览器不支持WebSocket");
+        }
+        textarea{
+            margin:20px 0px 0px 10px;
+            font-size: 45px;
+            float:left;
+            resize:none;
+        }
+        input{
+            margin:150px 0px 0px 10px;
+            font-size:45px;
+            float:left;
         }
 
-        function sendMsg(msg) { //发送消息
-            if (!msg || msg == "") {
-                return;
-            }
-            if (window.WebSocket) {
-                if (websocket.readyState == WebSocket.OPEN) { //如果WebSocket是打开状态
-                    lastDate=new Date().getTime();
-                    websocket.send(lastDate + "!!A!A!A!!sOmeBodySay:" + msg); //send()发送消息
-                    $("#reqMessage").val("");
-                }
-            } else {
-                return;
-            }
+        body {
+            overflow-y: hidden;
         }
 
-
-    </script>
+        html {
+            overflow-y: hidden;
+        }
+    </style>
 </head>
 <body>
-<h1>匿名聊天室</h1>
-<form onsubmit="return false">
-    <textarea style="width: 300px; height: 200px;" name="message" id="reqMessage"></textarea>
-    <input type="button" onclick="sendMsg(this.form.message.value)" value="发送"><br>
-    <h3>信息</h3>
-    <textarea style="width: 300px; height: 200px;" id="respMessage"></textarea>
-    <input type="button" value="清空" onclick="javascript:document.getElementById('respMessage').value = ''">
-</form>
+<h1>留言板</h1>
 <h3>当前有<label id="count">0</label>人在线</h3>
+<form onsubmit="return false">
+    <textarea style="width: 90%; height: 60vh;" id="respMessage" readonly="readonly"></textarea>
+    <textarea style="width: 75%; height: 10vh;" name="message" id="reqMessage"></textarea>
+    <div style="width:200px; height:10vh ;font-size: 55px;background: deepskyblue;float:left;margin:20px 0px 0px 10px; text-align:center; line-height: 200px;color:white;" onclick="sendMsg($('#reqMessage').val());">发送</div>
+</form>
+
 </body>
 </html>

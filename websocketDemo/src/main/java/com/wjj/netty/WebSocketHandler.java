@@ -9,6 +9,9 @@ import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import redis.clients.jedis.Jedis;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
 
@@ -28,12 +31,15 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
             return;
         }
         String[] message = msg.text().split("!!A!A!A!!sOmeBodySay:");
+        Date date = new Date();
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        message[0] = date.getTime()+"";
         channelGroup.forEach(ch -> {
             if (ch == channel) {
                 RedisOperation.saveMessage(jedis, message[0], message[1]);
-                ch.writeAndFlush(new TextWebSocketFrame("我: " + message[1]));
+                ch.writeAndFlush(new TextWebSocketFrame(sdf.format(date)+" 我: \n" + message[1].trim()));
             } else {
-                ch.writeAndFlush(new TextWebSocketFrame("某人: " + message[1]));
+                ch.writeAndFlush(new TextWebSocketFrame(sdf.format(date)+" 某人: \n" + message[1].trim()));
             }
         });
         System.out.println(channel.remoteAddress() + ": " + msg.text());
