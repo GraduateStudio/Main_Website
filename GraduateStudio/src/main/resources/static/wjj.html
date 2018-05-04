@@ -9,7 +9,8 @@
         tr {
             border: 1px solid #ccc;
         }
--
+
+        -
         td {
             padding: 0px 10px 0px 10px;
         }
@@ -33,28 +34,27 @@
                         newRow.insertCell(6).innerHTML = data[i].effectiTime;
                         newRow.insertCell(7).innerHTML = data[i].status;
                     }
-                    if(lastRowLen != 0) {
+                    if (lastRowLen != 0) {
                         for (var i = 0; i < lastRowLen; i++) {
                             $("table")[0].deleteRow(1);
                         }
                     }
-                    lastRowLen=data.length;
+                    lastRowLen = data.length;
                 }
             });
         }
 
 
-
         var websocket;
 
         //如果浏览器支持WebSocket
-        if(window.WebSocket){
+        if (window.WebSocket) {
             websocket = new WebSocket("ws://localhost:8989/ws");  //获得WebSocket对象
 
             //当有消息过来的时候触发
-            websocket.onmessage = function(event){
-                var msg=event.data;
-                if(msg.indexOf("!!A!A!A!!nowConnectCount:")>-1){
+            websocket.onmessage = function (event) {
+                var msg = event.data;
+                if (msg.indexOf("!!A!A!A!!nowConnectCount:") > -1) {
                     $("#count").html(msg.substr(25));
                     return;
                 }
@@ -63,29 +63,40 @@
             }
 
             //连接关闭的时候触发
-            websocket.onclose = function(event){
+            websocket.onclose = function (event) {
                 var respMessage = document.getElementById("respMessage");
                 respMessage.value = respMessage.value + "\n断开连接";
             }
 
             //连接打开的时候触发
-            websocket.onopen = function(event){
+            websocket.onopen = function (event) {
                 websocket.send("!!A!A!A!!"); //send()发送消息
                 $("#respMessage").val("");
             }
-        }else{
+        } else {
             alert("浏览器不支持WebSocket");
         }
 
         function sendMsg(msg) { //发送消息
-            if(window.WebSocket){
-                if(websocket.readyState == WebSocket.OPEN) { //如果WebSocket是打开状态
+            if (window.WebSocket) {
+                if (websocket.readyState == WebSocket.OPEN) { //如果WebSocket是打开状态
                     websocket.send(msg); //send()发送消息
                     $("#reqMessage").val("");
                 }
-            }else{
+            } else {
                 return;
             }
+        }
+
+        function getTemp() {
+            $.ajax({
+                type: "get",
+                url: "/stm/storemanagerment/getTemp",
+                success: function (data, obj, config) {
+                    debugger;
+                    $("#nowTemp").html("家里的当前温度为：" + data[0].split("=")[1].substring(0,data[0].split("=")[1].length-1) + "°C,家里的当前湿度为：" + data[1].split("=")[1]);
+                }
+            });
         }
     </script>
 </head>
@@ -115,4 +126,8 @@
     <input type="button" value="清空" onclick="javascript:document.getElementById('respMessage').value = ''">
 </form>
 <h3>当前有<label id="count">0</label>人在线</h3>
+
+
+<input type="button" value="查看室内温度" onclick="getTemp()">
+<lable id="nowTemp"></lable>
 </body>

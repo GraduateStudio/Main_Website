@@ -3,23 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>留言板</title>
+    <script>
+        if (navigator.platform.toLowerCase().indexOf("win") > -1) {
+            document.writeln("请用手机打开");
+            if (window.stop)
+                window.stop();
+            else
+                document.execCommand("Stop");
+        }
+    </script>
     <script src="lib/jquery-3.3.1.min.js"></script>
     <script src="lib/jquery.cookie.js"></script>
     <script src="websocket.js"></script>
     <style>
-        body{
+        body {
 
         }
-        textarea{
-            margin:20px 0px 0px 10px;
+
+        textarea {
+            margin: 20px 0px 0px 10px;
             font-size: 45px;
-            float:left;
-            resize:none;
+            float: left;
+            resize: none;
         }
-        input{
-            margin:150px 0px 0px 10px;
-            font-size:45px;
-            float:left;
+
+        input {
+            margin: 150px 0px 0px 10px;
+            font-size: 45px;
+            float: left;
         }
 
         body {
@@ -37,7 +48,9 @@
 <form onsubmit="return false">
     <textarea style="width: 90%; height: 60vh;" id="respMessage" readonly="readonly"></textarea>
     <textarea style="width: 75%; height: 10vh;" name="message" id="reqMessage"></textarea>
-    <div style="width:200px; height:10vh ;font-size: 55px;background: deepskyblue;float:left;margin:20px 0px 0px 10px; text-align:center; line-height: 200px;color:white;" onclick="sendMsg($('#reqMessage').val());">发送</div>
+    <div style="width:200px; height:10vh ;font-size: 55px;background: deepskyblue;float:left;margin:20px 0px 0px 10px; text-align:center; line-height: 200px;color:white;"
+         onclick="sendMsg($('#reqMessage').val());">发送
+    </div>
 </form>
 
 </body>

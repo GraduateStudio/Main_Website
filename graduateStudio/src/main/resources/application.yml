@@ -32,7 +32,13 @@ eureka:
 #Mapping位置配置
 mybatis:
  mapperLocations: mapper/*.xml 
- 
+
+Props:
+ ssh:
+  - name: 192.168.0.110
+    value: 192.168.0.110,pi,raspberry
+ sshmap:
+   192.168.0.110: pi,raspberry
 
 
 
