@@ -82,7 +82,7 @@ public class StoreManagmentController {
         String hostname = "192.168.0.110";
         String username = props.getSshmap().get(hostname).split(",")[0];
         String password = props.getSshmap().get(hostname).split(",")[1];
-        String command = "/usr1/wjj/Adafruit_Python_DHT/examples/AdafruitDHT.py 22 17";
+        String command = "Adafruit_DHT 22 17";
         String[] result = SshUtil.doSshCommand(hostname, username, password, command);
         return result;
     }
