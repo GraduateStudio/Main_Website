@@ -1,6 +1,7 @@
 <head>
     <meta charset="utf-8">
-    <script src="/stm/js/jquery-3.3.1.min.js"></script>
+    <script src="/stm/lib/jquery-3.3.1.min.js"></script>
+    <script src="/stm/lib/echarts.min.js"></script>
     <style>
         table {
             border-collapse: collapse;
@@ -10,7 +11,6 @@
             border: 1px solid #ccc;
         }
 
-        -
         td {
             padding: 0px 10px 0px 10px;
         }
@@ -58,6 +58,10 @@
                     $("#count").html(msg.substr(25));
                     return;
                 }
+                if (msg.indexOf("!!A!A!A!!nowgdConnectCount:") > -1) {
+                    $("#gdcount").html(msg.substr(27));
+                    return;
+                }
                 var respMessage = document.getElementById("respMessage");
                 respMessage.value = respMessage.value + "\n" + event.data;
             }
@@ -87,14 +91,85 @@
                 return;
             }
         }
-
+        $(document).ready(function(){
+            getTemp();
+        })
         function getTemp() {
             $.ajax({
                 type: "get",
                 url: "/stm/storemanagerment/getTemp",
                 success: function (data, obj, config) {
                     debugger;
-                    $("#nowTemp").html("家里的当前温度为：" + data[0].split("=")[1].substring(0,data[0].split("=")[1].length-1) + "°C,家里的当前湿度为：" + data[1].split("=")[1]);
+                    var temperature = [];
+                    var humidity = [];
+                    var xaxis = [];
+                    data.forEach(function (item, index) {
+                        temperature.push(item.split(',')[0]);
+                        humidity.push(item.split(',')[1]);
+                        xaxis.push('');
+                    });
+                    xaxis[xaxis.length-1] = "现在";
+                    var myChart = echarts.init(document.getElementById('main'));
+                    option = {
+                        title: {
+                            text: '湿度温度曲线图'
+                        },
+                        tooltip: {
+                            trigger: 'axis'
+                        },
+                        legend: {
+                            data:['湿度','温度']
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                        toolbox: {
+                            feature: {
+                                saveAsImage: {}
+                            }
+                        },
+                        xAxis: {
+                            type: 'category',
+                            boundaryGap: false,
+                            data:xaxis
+                        },
+                        yAxis: {
+                            type: 'value'
+                        },
+                        series: [
+                            {
+                                name:'温度',
+                                type:'line',
+                                stack: '总量',
+                                label: {
+                                    normal: {
+                                        show: true,
+                                        position: 'top'
+                                    }
+                                },
+                                data:temperature
+                            },
+                            {
+                                name:'湿度',
+                                type:'line',
+                                stack: '总量',
+                                label: {
+                                    normal: {
+                                        show: true,
+                                        position: 'top'
+                                    }
+                                },
+                                data:humidity
+                            }
+                        ]
+                    };
+                    myChart.setOption(option);
+                    myChart.on("click",function(param){
+                        debugger;
+                    })
                 }
             });
         }
@@ -126,8 +201,7 @@
     <input type="button" value="清空" onclick="javascript:document.getElementById('respMessage').value = ''">
 </form>
 <h3>当前有<label id="count">0</label>人在线</h3>
+<h3>当前光电感应：<label id="gdcount">0</label>次</h3>
 
-
-<input type="button" value="查看室内温度" onclick="getTemp()">
-<lable id="nowTemp"></lable>
+<div id="main" style="height:500px;width:100%"></div>
 </body>

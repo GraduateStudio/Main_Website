@@ -8,14 +8,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class SshUtil {
 
     private SshUtil() {
     }
 
-   public static String[] doSshCommand(String hostname, String username, String password, String command) {
-        String[] result = null;
+    public static List<String> doSshCommand(String hostname, String username, String password, String command) {
+        List<String> result = new ArrayList<>();
         try {
             Connection conn = new Connection(hostname);
             conn.connect();
@@ -31,7 +33,7 @@ public final class SshUtil {
                 String line = br.readLine();
                 if (line == null)
                     break;
-                result = line.split("  ");
+                result.add(line);
             }
             sess.close();
             conn.close();

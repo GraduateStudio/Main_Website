@@ -7,6 +7,8 @@ import com.spc.config.Props;
 import com.spc.stm.entity.StoreInfo;
 import com.spc.stm.service.IStoreManagment;
 import com.spc.utils.SshUtil;
+import com.spc.websocket.WebSocketHandler;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +21,7 @@ import java.util.List;
 @CrossOrigin(allowCredentials = "true", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE}, origins = "*")
 @RequestMapping(value = "/storemanagerment")
 public class StoreManagmentController {
-
+    static int count = 0;
     @Autowired
     Props props;
     @Autowired
@@ -78,14 +80,22 @@ public class StoreManagmentController {
 
     @ApiOperation(value = "获取树莓派温度传感器")
     @GetMapping(value = "/getTemp")
-    String[] getTemp() {
+    List<String> getTemp() {
         String hostname = "192.168.0.110";
         String username = props.getSshmap().get(hostname).split(",")[0];
         String password = props.getSshmap().get(hostname).split(",")[1];
-        String command = "Adafruit_DHT 22 17";
-        String[] result = SshUtil.doSshCommand(hostname, username, password, command);
+        String command = "cat /usr1/wjj/wjj.txt";
+        List<String> result = SshUtil.doSshCommand(hostname, username, password, command);
         return result;
     }
 
+    @ApiOperation(value = "获取树莓派光电计数")
+    @GetMapping(value = "/doCount")
+    Integer getCount(@RequestParam("string")String s) {
+        System.out.println(s);
+        System.out.print(++count);
+        WebSocketHandler.channelGroup.writeAndFlush(new TextWebSocketFrame("!!A!A!A!!nowgdConnectCount:"+count));
+        return count;
+    }
 
 }

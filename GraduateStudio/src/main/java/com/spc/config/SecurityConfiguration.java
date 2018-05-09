@@ -24,9 +24,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                .anyRequest()
 //                .authenticated().and().addFilterAfter(new FilterTest(),AnonymousAuthenticationFilter.class);
         http.authorizeRequests()
-                .antMatchers("/stm/user").hasRole("ADMIN")//用户权限
-                .antMatchers("/stm/**").hasRole("ADMIN")   //管理员权限
-                .antMatchers("/stm/wjj.html").hasRole("ADMIN")  //管理员权限
+//                .antMatchers("/stm/user").hasRole("ADMIN")//用户权限
+//                .antMatchers("/stm/**").hasRole("ADMIN")   //管理员权限
+//                .antMatchers("/stm/wjj.html").hasRole("ADMIN")  //管理员权限
                 .and()
                 .formLogin()
                 .loginPage("/stm/login").permitAll()
