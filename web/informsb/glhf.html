@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script>
+/*        if (navigator.platform.toLowerCase().indexOf("win") > -1) {
+            document.writeln("请用手机打开");
+            if (window.stop)
+                window.stop();
+            else
+                document.execCommand("Stop");
+        }*/
+    </script>
+    <script src="../lib/extend.nevernow.fn.js"></script>
+    <script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp"></script>
+    <script src="../lib/jquery-3.3.1.min.js"></script>
+    <title>玩的开心</title>
+    <style>
+        h1{
+            font-size:520px;
+            margin-top:0px;
+        }
+        body{text-align:center}
+    </style>
+    <script>
+        var citylocation = null;
+        var init = function() {
+            citylocation = new qq.maps.CityService({
+                complete : function(result){
+                    if(result && result.detail && result.detail.name != ''){
+                        $("#location").html(result.detail.name);
+                        $("#locationHead").show()
+                    }
+                }
+            });
+            citylocation.searchLocalCity();
+            $.get("\getcount","",function(result){
+                $("#getcount").html(result);
+                $("#getcountHead").show();
+            },"text");
+            /*初始化文字*/
+            var text = getUrlParam("text");
+            if(text) {
+                document.title = text;
+                text.split("").forEach(function (item, index) {
+                    $("#main_text").append("<h1>" + item + "</h1>");
+                });
+                /*根据url参数判断是否需要显示头*/
+                var isShowHead = getUrlParam("showHead");
+                if (isShowHead == 1) {
+                    $("#main_head_wellcome").show();
+                }
+            }
+        }
+
+        $(document).ready(function(){
+           init();
+        });
+    </script>
+</head>
+<body>
+<div id="main_head_wellcome" style="display:none;">
+    <h3 id="locationHead" style="display:none;">来自<span id="location"></span>的<span id="getcountHead" style="display:none;">第<span id="getcount"></span>位</span>朋友谢谢你祝</h3>
+</div>
+<div id="main_text">
+</div>
+</body>
+</html>

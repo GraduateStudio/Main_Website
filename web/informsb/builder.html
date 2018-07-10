@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script>
+        /*        if (navigator.platform.toLowerCase().indexOf("win") > -1) {
+                    document.writeln("请用手机打开");
+                    if (window.stop)
+                        window.stop();
+                    else
+                        document.execCommand("Stop");
+                }*/
+    </script>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="../lib/jquery-3.3.1.min.js"></script>
+    <script src="../lib/extend.nevernow.fn.js"></script>
+    <script src="../lib/qrcode.js"></script>
+    <script src="../lib/bootstrap4/js/bootstrap.bundle.js"></script>
+    <script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp"></script>
+    <title>informsb</title>
+    <style>
+        body {
+            padding: 50px;
+        }
+
+        .review {
+            margin: 20px 0px 0px 20px;
+            width: 100%;
+            border: solid 1px grey;
+            text-align: center;
+            box-shadow: 10px 10px 5px #888888;
+            display: none;
+        }
+    </style>
+    <script>
+        var showHead = 0;
+        var init = function () {
+            var qrcode = new QRCode('qr_code', {
+                width: 256,
+                height: 256,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.M,//L 7%,M 15%,Q 25%,H 30%
+            });
+            $("[name='ojbk']").on("click", function () {
+                var text = $("[name='tellText']").val();
+                if (text == "") {
+                    alert("请输入想要表达的内容")
+                    return;
+                }
+                //清空二维码
+                qrcode.clear();
+                //生成二维码
+                qrcode.makeCode("http://nevernow.top:18706/informsb/glhf.html?text=" + text + "&showHead=" + showHead);
+                $("#qrCodeView").show();
+            });
+            $("[name='ktmd']").on("click", function () {
+                var text = $("[name='tellText']").val();
+                if (text == "") {
+                    alert("请输入想要表达的内容")
+                    return;
+                }
+                $("#main_text").html("");
+                $("#main_head_wellcome").hide();
+                review();
+            });
+
+        }
+        var citylocation = null;
+        var review = function () {
+            $("#view").show();
+            citylocation = new qq.maps.CityService({
+                complete: function (result) {
+                    if (result && result.detail && result.detail.name != '') {
+                        $("#location").html(result.detail.name);
+                        $("#locationHead").show()
+                    }
+                }
+            });
+            citylocation.searchLocalCity();
+            $.get("\getcount", "", function (result) {
+                $("#getcount").html(result);
+                $("#getcountHead").show();
+            }, "text");
+            /*初始化文字*/
+            var text = $("[name='tellText']").val();
+            if (text) {
+                document.title = text;
+                text.split("").forEach(function (item, index) {
+                    $("#main_text").append("<h1>" + item + "</h1>");
+                });
+                /*根据url参数判断是否需要显示头*/
+                var isShowHead = showHead;
+                if (isShowHead == 1) {
+                    $("#main_head_wellcome").show();
+                }
+            }
+        }
+        $(document).ready(function () {
+            init();
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">是否需要头
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" onclick="showHead=1;">是</a>
+                <a class="dropdown-item" onclick="showHead=0;">否</a>
+            </div>
+        </div>
+        <input name="tellText" type="text" class="form-control" placeholder="请输入想表达的内容">
+        <div class="input-group-append">
+            <button name="ojbk" class="btn btn-outline-secondary" type="button">确定</button>
+            <button name="ktmd" class="btn btn-outline-secondary" type="button">预览</button>
+        </div>
+    </div>
+
+    <div class="review" id="view">
+        <div id="main_head_wellcome" style="display:none;">
+            <h3 id="locationHead" style="display:none;">来自<span id="location"></span>的<span id="getcountHead"
+                                                                                            style="display:none;">第<span
+                    id="getcount"></span>位</span>朋友谢谢你祝</h3>
+        </div>
+        <div id="main_text">
+        </div>
+    </div>
+    <div id="qrCodeView" style="text-align: center;margin-top:50px;display:none;">
+        <span>分享二维码</span>
+        <div style="width:256px;margin:0 auto">
+            <div id="qr_code"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
