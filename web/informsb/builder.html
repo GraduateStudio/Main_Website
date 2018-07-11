@@ -3,27 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <script>
-  /*      if (navigator.platform.toLowerCase().indexOf("win") > -1) {
-            document.writeln("请用手机打开");
-            if (window.stop)
-                window.stop();
-            else
-                document.execCommand("Stop");
-        }*/
+        /*      if (navigator.platform.toLowerCase().indexOf("win") > -1) {
+                  document.writeln("请用手机打开");
+                  if (window.stop)
+                      window.stop();
+                  else
+                      document.execCommand("Stop");
+              }*/
     </script>
     <meta name="viewport" content="width=device-width,maximum-scale=1,user-scalable=no">
-    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../lib/bootstrap4/css/bootstrap.min.css">
     <script src="../lib/jquery-3.3.1.min.js"></script>
     <script src="../lib/extend.nevernow.fn.js"></script>
-    <script src="../lib/qrcode.js"></script>
+    <script src="../lib/jquery.qrcode.js"></script>
+    <script src="../lib/utf.js"></script>
     <script src="../lib/bootstrap4/js/bootstrap.bundle.js"></script>
     <script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp"></script>
     <title>informsb</title>
     <style>
-        body{
+        body {
             background: #fdfcf8;
         }
-        input{background: white;}
+
+        input {
+            background: white;
+        }
+
         .review {
             margin: 20px 0px 0px 20px;
             width: 90%;
@@ -31,6 +36,22 @@
             text-align: center;
             box-shadow: 10px 10px 5px #888888;
             display: none;
+        }
+
+        .fileinput-button {
+            position: relative;
+            border: none;
+            display: inline-block;
+        }
+
+        .fileinput-button input {
+            position: absolute;
+            border: none;
+            right: 0px;
+            top: 0px;
+            height: 33px;
+            background: transparent;
+            color: transparent;
         }
 
         .head_input {
@@ -44,14 +65,8 @@
     <script>
         var showHead = 0;
         var viewTogger = false;
+        var imgSrc;
         var init = function () {
-            var qrcode = new QRCode('qr_code', {
-                width: 256,
-                height: 256,
-                colorDark: '#000000',
-                colorLight: '#ffffff',
-                correctLevel: QRCode.CorrectLevel.M //L 7%,M 15%,Q 25%,H 30%
-            });
 
             $("[name='ojbk']").on("click", function () {
                 var text = $("[name='tellText']").val();
@@ -59,18 +74,30 @@
                     alert("请输入想要表达的内容")
                     return;
                 }
-                //清空二维码
-                qrcode.clear();
                 //生成二维码
-                qrcode.makeCode("http://nevernow.top:18706/informsb/glhf.html?text=" + text + "&showHead=" + showHead);
+                var option = {
+                    render: "canvas",
+                    text: "http://nevernow.top:18706/informsb/glhf.html?text=" + text + "&showHead=" + showHead,
+                    width: "200",               //二维码的宽度
+                    height: "200",              //二维码的高度
+                    background: "#ffffff",       //二维码的后景色
+                    foreground: "#000000",        //二维码的前景色
+                    //src: '../img/p0.jpg'             //二维码中间的图片
+                }
+                if (imgSrc && imgSrc != "") {
+                    option.src = imgSrc;
+                }
+                $('#qr_code').html("");//清空
+                $('#qr_code').qrcode(option);//生成
+                setTimeout('$("#qrCodeImg").attr("src",$("#qr_code>canvas")[0].toDataURL("image/jpg"))',50);
                 $("#qrCodeView").show();
             });
             $("[name='ktmd']").on("click", function () {
-                viewTogger=!viewTogger;
+                viewTogger = !viewTogger;
                 $("#main_text").html("");
                 $("#main_head_wellcome").hide();
                 $("#view").hide();
-                if(viewTogger) {
+                if (viewTogger) {
                     var text = $("[name='tellText']").val();
                     if (text == "") {
                         alert("请输入想要表达的内容")
@@ -111,6 +138,35 @@
                 }
             }
         }
+
+        function imgPreview(fileDom) {
+            //判断是否支持FileReader
+            if (window.FileReader) {
+                var reader = new FileReader();
+            } else {
+                alert("您的设备不支持图片预览功能，如需该功能请升级您的设备！");
+            }
+
+            //获取文件
+            var file = fileDom.files[0];
+            var imageType = /^image\//;
+            //是否是图片
+            if (!imageType.test(file.type)) {
+                alert("请选择图片！");
+                return;
+            }
+            //读取完成
+            reader.onload = function (e) {
+                //获取图片dom
+                var img = document.getElementById("preview");
+                //图片路径设置为读取的图片
+                imgSrc = e.target.result;
+                $('#preview').show();
+                img.src = imgSrc;
+            };
+            reader.readAsDataURL(file);
+        }
+
         $(document).ready(function () {
             init();
         });
@@ -119,6 +175,13 @@
 <body>
 <div class="head_input">
     <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Logo</button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" onclick="$('#file').click()">上传</a>
+                <img id="preview" style="width: 250px;height:250px;display:none;"/>
+            </div>
+        </div>
         <input name="tellText" type="text" class="form-control" placeholder="请输入想表达的内容">
         <div class="input-group-append">
             <button name="ojbk" class="btn btn-outline-primary" type="button">确定</button>
@@ -138,11 +201,14 @@
         </div>
     </div>
     <div id="qrCodeView" style="text-align: center;margin-top:50px;display:none;">
-        <span>分享二维码</span>
-        <div style="width:256px;margin:0 auto">
-            <div id="qr_code"></div>
-        </div>
+        <div id="qr_code" style="display:none;"></div>
+        <img id="qrCodeImg" style="width: 250px;height:250px;"/>
     </div>
 </div>
+
+<span class="btn btn-success fileinput-button" style="display:none">
+    <span>上传</span>
+    <input type="file" id="file" accept="image/*" onchange="imgPreview(this)">
+</span>
 </body>
 </html>

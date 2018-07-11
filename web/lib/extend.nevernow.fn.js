@@ -1,5 +1,4 @@
 function getUrlParam(name) {
-
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
     var URL = decodeURI(window.location.search);
     var r = URL.substr(1).match(reg);
