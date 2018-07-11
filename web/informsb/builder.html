@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <script>
-        /*        if (navigator.platform.toLowerCase().indexOf("win") > -1) {
-                    document.writeln("请用手机打开");
-                    if (window.stop)
-                        window.stop();
-                    else
-                        document.execCommand("Stop");
-                }*/
+  /*      if (navigator.platform.toLowerCase().indexOf("win") > -1) {
+            document.writeln("请用手机打开");
+            if (window.stop)
+                window.stop();
+            else
+                document.execCommand("Stop");
+        }*/
     </script>
+    <meta name="viewport" content="width=device-width,maximum-scale=1,user-scalable=no">
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.1.0/css/bootstrap.min.css">
     <script src="../lib/jquery-3.3.1.min.js"></script>
     <script src="../lib/extend.nevernow.fn.js"></script>
@@ -19,29 +20,39 @@
     <script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp"></script>
     <title>informsb</title>
     <style>
-        body {
-            padding: 50px;
+        body{
+            background: #fdfcf8;
         }
-
+        input{background: white;}
         .review {
             margin: 20px 0px 0px 20px;
-            width: 100%;
+            width: 90%;
             border: solid 1px grey;
             text-align: center;
             box-shadow: 10px 10px 5px #888888;
             display: none;
         }
+
+        .head_input {
+            position: fixed;
+            width: 100%;
+            padding: 10px 1rem 0px 1rem;
+            background: whitesmoke;
+            border-bottom: solid 1px darkgrey;
+        }
     </style>
     <script>
         var showHead = 0;
+        var viewTogger = false;
         var init = function () {
             var qrcode = new QRCode('qr_code', {
                 width: 256,
                 height: 256,
                 colorDark: '#000000',
                 colorLight: '#ffffff',
-                correctLevel: QRCode.CorrectLevel.M,//L 7%,M 15%,Q 25%,H 30%
+                correctLevel: QRCode.CorrectLevel.M //L 7%,M 15%,Q 25%,H 30%
             });
+
             $("[name='ojbk']").on("click", function () {
                 var text = $("[name='tellText']").val();
                 if (text == "") {
@@ -55,14 +66,18 @@
                 $("#qrCodeView").show();
             });
             $("[name='ktmd']").on("click", function () {
-                var text = $("[name='tellText']").val();
-                if (text == "") {
-                    alert("请输入想要表达的内容")
-                    return;
-                }
+                viewTogger=!viewTogger;
                 $("#main_text").html("");
                 $("#main_head_wellcome").hide();
-                review();
+                $("#view").hide();
+                if(viewTogger) {
+                    var text = $("[name='tellText']").val();
+                    if (text == "") {
+                        alert("请输入想要表达的内容")
+                        return;
+                    }
+                    review();
+                }
             });
 
         }
@@ -102,24 +117,17 @@
     </script>
 </head>
 <body>
-<div class="container">
+<div class="head_input">
     <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">是否需要头
-            </button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" onclick="showHead=1;">是</a>
-                <a class="dropdown-item" onclick="showHead=0;">否</a>
-            </div>
-        </div>
         <input name="tellText" type="text" class="form-control" placeholder="请输入想表达的内容">
         <div class="input-group-append">
-            <button name="ojbk" class="btn btn-outline-secondary" type="button">确定</button>
+            <button name="ojbk" class="btn btn-outline-primary" type="button">确定</button>
             <button name="ktmd" class="btn btn-outline-secondary" type="button">预览</button>
         </div>
     </div>
-
+</div>
+<div style="height:75px"></div>
+<div class="container">
     <div class="review" id="view">
         <div id="main_head_wellcome" style="display:none;">
             <h3 id="locationHead" style="display:none;">来自<span id="location"></span>的<span id="getcountHead"
